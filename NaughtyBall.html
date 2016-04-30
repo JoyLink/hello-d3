@@ -56,15 +56,19 @@ path {
 
   canvas.selectAll("circle")
   .transition()
-    .duration(2500)
     .each(slide);
+
+  function distance(x1, y1, x2, y2) {
+    return Math.sqrt(Math.pow((x1-x2), 2) + (Math.pow(y1-y2), 2));
+  }
 
   function slide() {
     var circle = d3.select(this);
     (function repeat() {
 
       var targetx, targety;
-
+      var dis;
+      var speed = 0.2;
       //toward right down
       if (xspeed > 0 && yspeed > 0) {
         // alert('1');
@@ -95,6 +99,7 @@ path {
           yspeed = -yspeed;
           
         }
+        dis = distance(targetx, targety, currx, curry);
         currx = targetx;
         curry = targety;
       }
@@ -130,6 +135,7 @@ path {
           yspeed = -yspeed;
           
         }
+        dis = distance(targetx, targety, currx, curry);
         currx = targetx;
         curry = targety;
 
@@ -162,6 +168,7 @@ path {
             xspeed = xspeed;
             yspeed = -yspeed;
           }
+          dis = distance(targetx, targety, currx, curry);
           currx = targetx;
           curry = targety;
       }
@@ -193,11 +200,14 @@ path {
             yspeed = -yspeed;
             xspeed = xspeed;
           }
+          dis = distance(targetx, targety, currx, curry);
           currx = targetx;
           curry = targety;
       }
+
       circle = circle
         .transition()
+        .duration(dis/speed)
         .attr("fill", '#'+(function lol(m,s,c){return s[m.floor(m.random() * s.length)] + (c && lol(m,s,c-1));})(Math,'0123456789ABCDEF',4))
         .attr("cx", targetx)
         .attr("cy", targety)
