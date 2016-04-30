@@ -9,7 +9,7 @@ body {
 }
 form {
   position: absolute;
-  top: 1em;
+  top: 32em;
   left: 1em;
 }
 path {
@@ -29,6 +29,15 @@ path {
 </style>
 <body>
 
+<form>
+  <input type="radio" name="speed" id="slow">
+  <label for="ref-annulus">Slow</label><br>
+  <input type="radio" name="speed" id="medum" checked>
+  <label for="ref-planet">Medium</label><br>
+  <input type="radio" name="speed" id="fast">
+  <label for="ref-sun">Fast</label>
+</form>
+
   <script src="https://d3js.org/d3.v3.min.js">
     
   </script>
@@ -37,7 +46,7 @@ path {
   var width = 1100,
       height = 500,
       radius = 40,
-      speed = 4,
+      speed = 0.2,
       start = Date.now();
   var canvas = d3.select("body")
                .append("svg")
@@ -47,6 +56,40 @@ path {
                .attr("cx", radius)
                .attr("cy", radius)
                .attr("r" ,radius);
+
+
+  var line1 = canvas.append("line")
+                           .attr("x1", 0)
+                           .attr("y1", 0)
+                           .attr("x2", 0)
+                           .attr("y2", 500)
+                           .attr("stroke-width", 2)
+                           .attr("stroke", "black");
+
+  var line2 = canvas.append("line")
+                           .attr("x1", 0)
+                           .attr("y1", 0)
+                           .attr("x2", 1100)
+                           .attr("y2", 0)
+                           .attr("stroke-width", 2)
+                           .attr("stroke", "black");
+
+  var line3 = canvas.append("line")
+                           .attr("x1", 0)
+                           .attr("y1", 500)
+                           .attr("x2", 1100)
+                           .attr("y2", 500)
+                           .attr("stroke-width", 2)
+                           .attr("stroke", "black");
+
+  var line4 = canvas.append("line")
+                           .attr("x1", 1100)
+                           .attr("y1", 0)
+                           .attr("x2", 1100)
+                           .attr("y2", 500)
+                           .attr("stroke-width", 2)
+                           .attr("stroke", "black");
+
 
   var xspeed = 1,
       yspeed = 2;
@@ -58,6 +101,13 @@ path {
   .transition()
     .each(slide);
 
+d3.selectAll("input[name=speed]")
+    .data([0.1, 0.2, 0.4])
+    .on("change", function(radius1) { 
+      speed = radius1;
+      
+    });
+
   function distance(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow((x1-x2), 2) + (Math.pow(y1-y2), 2));
   }
@@ -68,10 +118,9 @@ path {
 
       var targetx, targety;
       var dis;
-      var speed = 0.2;
       //toward right down
       if (xspeed > 0 && yspeed > 0) {
-        // alert('1');
+        
         var tx = width - radius,
             ty = height - radius;
         var dx = tx - currx,
@@ -106,7 +155,6 @@ path {
 
       //toward left down
       else if(xspeed < 0 && yspeed > 0) {
-        // alert('2');
         
         var tx = radius,
             ty = height - radius;
@@ -114,21 +162,18 @@ path {
             dy = ty - curry;
   
         if (dx * 2 == dy) {
-          // alert('a');
           targtx = tx;
           targety = ty;
           xspeed = -xspeed;
           yspeed = -yspeed;
         }
         else if (dx * 2 < dy) {
-          // alert('b');
           targetx = tx;
           targety = curry + 2 * dx;
           xspeed = -xspeed;
           yspeed = yspeed;
         }
         else if (dx * 2 > dy) {
-          // alert('c');
           targety = ty;
           targetx = currx - dy/2;
           xspeed = xspeed;
@@ -142,7 +187,6 @@ path {
       }
       //toward right up
       else if(xspeed > 0 && yspeed < 0) {
-          // alert('3');
           var tx = width - radius,
               ty = radius;
           var dx = tx - currx,
@@ -174,27 +218,23 @@ path {
       }
       //toward left up
       else if(xspeed < 0 && yspeed < 0) {
-          // alert('4');
           var tx = radius,
               ty = radius;
           var dx = currx - radius,
               dy = curry - radius;
           if (dx * 2 == dy) {
-            // alert('a');
             targetx = tx;
             targety = ty;
             xspeed = -xspeed;
             yspeed = -yspeed;
           }
           else if (dx * 2 < dy) {
-            // alert('b');
             targetx = radius;
             targety = curry - 2 * dx;
             yspeed = yspeed;
             xspeed = -xspeed;
           }
           else if(dx * 2 > dy) {
-            // alert('c');
             targety = radius;
             targetx = currx - dy / 2;
             yspeed = -yspeed;
