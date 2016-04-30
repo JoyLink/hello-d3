@@ -43,7 +43,7 @@ path {
   </script>
 
   <script>
-  var width = 1100,
+  var width = 1250,
       height = 500,
       radius = 40,
       speed = 0.2,
@@ -62,31 +62,31 @@ path {
                            .attr("x1", 0)
                            .attr("y1", 0)
                            .attr("x2", 0)
-                           .attr("y2", 500)
+                           .attr("y2", height)
                            .attr("stroke-width", 2)
                            .attr("stroke", "black");
 
   var line2 = canvas.append("line")
                            .attr("x1", 0)
                            .attr("y1", 0)
-                           .attr("x2", 1100)
+                           .attr("x2", width)
                            .attr("y2", 0)
                            .attr("stroke-width", 2)
                            .attr("stroke", "black");
 
   var line3 = canvas.append("line")
                            .attr("x1", 0)
-                           .attr("y1", 500)
-                           .attr("x2", 1100)
-                           .attr("y2", 500)
+                           .attr("y1", height)
+                           .attr("x2", width)
+                           .attr("y2", height)
                            .attr("stroke-width", 2)
                            .attr("stroke", "black");
 
   var line4 = canvas.append("line")
-                           .attr("x1", 1100)
+                           .attr("x1", width)
                            .attr("y1", 0)
-                           .attr("x2", 1100)
-                           .attr("y2", 500)
+                           .attr("x2", width)
+                           .attr("y2", height)
                            .attr("stroke-width", 2)
                            .attr("stroke", "black");
 
@@ -141,7 +141,7 @@ d3.selectAll("input[name=speed]")
           yspeed = yspeed;
         }
         else if(dx * 2 > dy) {
-          
+
           targety = ty;
           targetx = currx + dy / 2;
           xspeed = xspeed;
@@ -199,9 +199,9 @@ d3.selectAll("input[name=speed]")
             yspeed = -yspeed;
           }
           else if(dx * 2 < dy) {
-            
             targetx = tx;
-            targety = curry + 2 * dx;
+            targety = curry - 2 * dx;
+            
             yspeed = yspeed;
             xspeed = -xspeed;
           }
