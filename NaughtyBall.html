@@ -57,7 +57,7 @@ path {
                .attr("cy", radius)
                .attr("r" ,radius);
 
-
+  //the boundry for the svg
   var line1 = canvas.append("line")
                            .attr("x1", 0)
                            .attr("y1", 0)
@@ -101,6 +101,7 @@ path {
   .transition()
     .each(slide);
 
+//set the speed for different input checked
 d3.selectAll("input[name=speed]")
     .data([0.1, 0.2, 0.4])
     .on("change", function(radius1) { 
@@ -108,10 +109,12 @@ d3.selectAll("input[name=speed]")
       
     });
 
+  //calculate the distance between start and end point
   function distance(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow((x1-x2), 2) + (Math.pow(y1-y2), 2));
   }
 
+  //recursively to repeat() the ball reflecting
   function slide() {
     var circle = d3.select(this);
     (function repeat() {
