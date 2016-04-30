@@ -34,7 +34,7 @@ path {
   </script>
 
   <script>
-  var width = 960,
+  var width = 1100,
       height = 500,
       radius = 40,
       speed = 4,
@@ -48,6 +48,12 @@ path {
                .attr("cy", radius)
                .attr("r" ,radius);
 
+  var xspeed = 1,
+      yspeed = 2;
+
+  var currx = radius,
+      curry = radius;
+
   canvas.selectAll("circle")
   .transition()
     .duration(2500)
@@ -56,11 +62,146 @@ path {
   function slide() {
     var circle = d3.select(this);
     (function repeat() {
-      circle = circle.transition()
-          .attr("cx", width-radius)
+
+      var targetx, targety;
+
+      //toward right down
+      if (xspeed > 0 && yspeed > 0) {
+        // alert('1');
+        var tx = width - radius,
+            ty = height - radius;
+        var dx = tx - currx,
+            dy = ty - curry;
+        
+        if(dx * 2 == dy) {
+          
+          targetx = tx;
+          targety = ty;
+          xspeed = -xspeed;
+          yspeed = -yspeed;
+        }
+        else if(dx * 2 < dy) {
+          
+          targetx = tx;
+          targety = curry + 2 * dx;
+          xspeed = -xspeed;
+          yspeed = yspeed;
+        }
+        else if(dx * 2 > dy) {
+          
+          targety = ty;
+          targetx = currx + dy / 2;
+          xspeed = xspeed;
+          yspeed = -yspeed;
+          
+        }
+        currx = targetx;
+        curry = targety;
+      }
+
+      //toward left down
+      else if(xspeed < 0 && yspeed > 0) {
+        // alert('2');
+        
+        var tx = radius,
+            ty = height - radius;
+        var dx = currx - tx,
+            dy = ty - curry;
+  
+        if (dx * 2 == dy) {
+          // alert('a');
+          targtx = tx;
+          targety = ty;
+          xspeed = -xspeed;
+          yspeed = -yspeed;
+        }
+        else if (dx * 2 < dy) {
+          // alert('b');
+          targetx = tx;
+          targety = curry + 2 * dx;
+          xspeed = -xspeed;
+          yspeed = yspeed;
+        }
+        else if (dx * 2 > dy) {
+          // alert('c');
+          targety = ty;
+          targetx = currx - dy/2;
+          xspeed = xspeed;
+          yspeed = -yspeed;
+          
+        }
+        currx = targetx;
+        curry = targety;
+
+      }
+      //toward right up
+      else if(xspeed > 0 && yspeed < 0) {
+          // alert('3');
+          var tx = width - radius,
+              ty = radius;
+          var dx = tx - currx,
+              dy = curry - radius;
+          if (dx * 2 == dy) {
+            
+            targetx = tx;
+            targety = ty;
+            xspeed = -xspeed;
+            yspeed = -yspeed;
+          }
+          else if(dx * 2 < dy) {
+            
+            targetx = tx;
+            targety = curry + 2 * dx;
+            yspeed = yspeed;
+            xspeed = -xspeed;
+          }
+          else if (dx * 2 > dy) {
+            
+            targety = ty;
+            targetx = currx + dy / 2;
+            xspeed = xspeed;
+            yspeed = -yspeed;
+          }
+          currx = targetx;
+          curry = targety;
+      }
+      //toward left up
+      else if(xspeed < 0 && yspeed < 0) {
+          // alert('4');
+          var tx = radius,
+              ty = radius;
+          var dx = currx - radius,
+              dy = curry - radius;
+          if (dx * 2 == dy) {
+            // alert('a');
+            targetx = tx;
+            targety = ty;
+            xspeed = -xspeed;
+            yspeed = -yspeed;
+          }
+          else if (dx * 2 < dy) {
+            // alert('b');
+            targetx = radius;
+            targety = curry - 2 * dx;
+            yspeed = yspeed;
+            xspeed = -xspeed;
+          }
+          else if(dx * 2 > dy) {
+            // alert('c');
+            targety = radius;
+            targetx = currx - dy / 2;
+            yspeed = -yspeed;
+            xspeed = xspeed;
+          }
+          currx = targetx;
+          curry = targety;
+      }
+      circle = circle
         .transition()
-          .attr("cx", radius)
-          .each("end", repeat);
+        .attr("fill", '#'+(function lol(m,s,c){return s[m.floor(m.random() * s.length)] + (c && lol(m,s,c-1));})(Math,'0123456789ABCDEF',4))
+        .attr("cx", targetx)
+        .attr("cy", targety)
+        .each("end", repeat);
     })();
   }
 
